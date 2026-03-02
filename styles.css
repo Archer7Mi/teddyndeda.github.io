@@ -210,6 +210,8 @@ a { color: inherit; }
   flex-direction: column;
   gap: var(--sp-1);
 }
+/* Ensure the HTML `hidden` attribute is not overridden by display:flex */
+.nav-mobile[hidden] { display: none !important; }
 .nav-mobile .nav-link {
   width: 100%;
   padding: var(--sp-3) var(--sp-4);

@@ -569,6 +569,30 @@ a { color: inherit; }
   color: var(--color-text-faint);
   border: 1px solid var(--color-border);
 }
+.status-expired {
+  background: var(--color-surface-2);
+  color: var(--color-text-faint);
+  border: 1px solid var(--color-border);
+  text-decoration: line-through;
+}
+.cert-name {
+  text-decoration: none;
+}
+.cert-name:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+.cert-credly-link {
+  margin-top: var(--sp-4);
+  font-size: var(--text-sm);
+}
+.cert-credly-link a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+.cert-credly-link a:hover {
+  text-decoration: underline;
+}
 
 /* ═══════════════════════════════════════════════════════════
    CONTACT

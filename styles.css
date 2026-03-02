@@ -685,6 +685,8 @@ a { color: inherit; }
   .nav-links { display: none; }
   .nav-toggle { display: flex; }
 
+  .timeline-item { grid-template-columns: 1fr; gap: var(--sp-3); }
+
   .hero-grid {
     flex-direction: column;
     text-align: center;

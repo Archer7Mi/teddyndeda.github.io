@@ -467,48 +467,6 @@
     .print-btn:hover { background: var(--accent2); }
     @media print { .print-btn, .sidebar { display: none; } .two-col { display: block; } }
   </style>
-
-    body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: 'Libre Baskerville', Georgia, serif;
-      line-height: 1.75;
-      font-size: 17px;
-    }
-
-    /* Masthead */
-      font-weight: 500;
-    }
-    .footer-l strong { color: var(--bright); font-weight: 600; }
-    .footer-links {
-      display: flex; gap: var(--sp-6); list-style: none;
-    }
-    .footer-links a {
-      font-size: 11px; color: var(--muted);
-      text-decoration: none; letter-spacing: 1px;
-      transition: color .15s;
-      font-weight: 500;
-    }
-    .footer-links a:hover { color: var(--accent); }
-
-    /* ─── Animations ─── */
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ─── Responsive ─── */
-    @media (max-width: 768px) {
-      .nav-inner { padding: 0 var(--sp-6); }
-      nav ul { display: none; }
-      .page-hero, .index-section, .divider, .article-section { padding-left: var(--sp-6); padding-right: var(--sp-6); }
-      .article-section { padding: var(--sp-6) var(--sp-6) 60px; }
-      .fw-grid, .compare { grid-template-columns: 1fr; }
-      .compare-col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
-      .articles-grid { grid-template-columns: 1fr; }
-      .article-card.featured { grid-template-columns: 1fr; gap: var(--sp-6); }
-      .site-footer { padding: var(--sp-6); flex-direction: column; align-items: flex-start; }
-    }
-  </style>
 </head>
 <body>
 

@@ -292,6 +292,21 @@ a { color: inherit; }
   margin-bottom: var(--sp-6);
   line-height: 1.75;
 }
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-6);
+}
+.hero-stats li {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: 6px var(--sp-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+}
 .hero-cta {
   display: flex;
   flex-wrap: wrap;
@@ -862,6 +877,7 @@ a { color: inherit; }
   .hero-name { font-size: var(--text-4xl); }
   .hero-cta { justify-content: center; }
   .hero-tagline { margin-inline: auto; }
+  .hero-stats { justify-content: center; }
 
   .about-grid { grid-template-columns: 1fr; gap: var(--sp-6); }
   .section-title { font-size: var(--text-3xl); }

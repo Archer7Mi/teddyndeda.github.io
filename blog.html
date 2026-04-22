@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cybersecurity insights and analysis by Michael Ted Ndeda — GRC, SOC operations, and strategic security thinking." />
+  <title>Blog | Michael Ted Ndeda</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:        #0a0b0d;
+      --surface:   #111318;
+      --surface2:  #161a21;
+      --border:    #1d2130;
+      --text:      #c8ccd6;
+      --muted:     #555d72;
+      --bright:    #eceef5;
+      --accent:    #e04f4f;
+      --accent2:   #3d7dd9;
+      --amber:     #c8873a;
+      --green:     #3da06e;
+      --radius:    4px;
+      --sp-1:      4px;
+      --sp-2:      8px;
+      --sp-3:      12px;
+      --sp-4:      16px;
+      --sp-5:      20px;
+      --sp-6:      24px;
+      --sp-8:      32px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header.site-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,11,13,.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 var(--sp-8);
+      height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      font-weight: 700; font-size: 15px;
+      color: var(--bright);
+      text-decoration: none;
+      letter-spacing: .5px;
+    }
+    nav ul {
+      list-style: none;
+      display: flex; gap: var(--sp-8); align-items: center;
+    }
+    nav ul a {
+      font-size: 12px; letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+      font-weight: 500;
+    }
+    nav ul a:hover,
+    nav ul a.active { color: var(--bright); }
+    nav ul a.active { color: var(--accent); }
+
+    #progress {
+      position: fixed; top: 60px; left: 0;
+      height: 2px; width: 0;
+      background: var(--accent);
+      z-index: 101;
+      transition: width .08s linear;
+    }
+
+    .page-hero {
+      max-width: 1100px; margin: 0 auto;
+      padding: var(--sp-8) var(--sp-8) var(--sp-6);
+      border-bottom: 1px solid var(--border);
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp .6s .05s ease forwards;
+    }
+    .page-eyebrow {
+      font-size: 10px; letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--sp-4);
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 600;
+    }
+    .page-eyebrow::after {
+      content: ''; flex: 1; max-width: 60px;
+      height: 1px; background: var(--accent); opacity: .4;
+    }
+    .page-title {
+      font-weight: 700; font-size: clamp(32px, 5vw, 52px);
+      color: var(--bright);
+      line-height: 1.1; letter-spacing: -1px;
+      margin-bottom: var(--sp-4);
+    }
+    .page-sub {
+      font-size: 16px; color: var(--muted);
+      max-width: 560px; font-style: italic;
+    }
+
+    .articles-section {
+      max-width: 1100px; margin: 0 auto;
+      padding: var(--sp-8) var(--sp-8);
+      opacity: 0; transform: translateY(16px);
+      animation: fadeUp .6s .15s ease forwards;
+    }
+    .section-label {
+      font-size: 10px; letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: var(--sp-6);
+      display: flex; align-items: center; gap: 12px;
+      font-weight: 600;
+    }
+    .section-label::after {
+      content: ''; flex: 1;
+      height: 1px; background: var(--border);
+    }
+
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: var(--sp-6);
+    }
+
+    .article-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: var(--sp-6);
+      display: flex; flex-direction: column;
+      gap: var(--sp-3);
+      text-decoration: none;
+      transition: border-color .2s, background .2s;
+      cursor: pointer;
+    }
+    .article-card:hover {
+      border-color: rgba(224,79,79,.35);
+      background: var(--surface2);
+    }
+    .card-meta {
+      display: flex; align-items: center;
+      gap: 10px; flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .tag.red   { color: var(--accent); border-color: rgba(224,79,79,.3); background: rgba(224,79,79,.06); }
+    .tag.blue  { color: var(--accent2); border-color: rgba(61,125,217,.3); background: rgba(61,125,217,.06); }
+    .tag.amber { color: var(--amber); border-color: rgba(200,135,58,.3); background: rgba(200,135,58,.06); }
+    .tag.new   { color: var(--green); border-color: rgba(61,160,110,.3); background: rgba(61,160,110,.06); }
+
+    .card-title {
+      font-weight: 700; font-size: 20px;
+      color: var(--bright); line-height: 1.2;
+    }
+    .card-excerpt {
+      font-size: 14px; color: var(--muted);
+      line-height: 1.65;
+    }
+    .card-footer {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-top: auto; padding-top: var(--sp-3);
+      border-top: 1px solid var(--border);
+    }
+    .card-date {
+      font-size: 10px; color: var(--muted);
+      font-weight: 500;
+    }
+    .card-arrow {
+      font-size: 12px; color: var(--accent);
+      transition: transform .2s;
+    }
+    .article-card:hover .card-arrow { transform: translateX(4px); }
+
+    .article-card.placeholder {
+      border-style: dashed;
+      opacity: .45;
+    }
+    .placeholder-label {
+      font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      padding: var(--sp-6) 0;
+      font-weight: 500;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: var(--sp-6) var(--sp-8);
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: var(--sp-4);
+    }
+    .footer-l {
+      font-size: 12px; color: var(--muted);
+      font-weight: 500;
+    }
+    .footer-l strong { color: var(--bright); font-weight: 600; }
+    .footer-links {
+      display: flex; gap: var(--sp-6); list-style: none;
+    }
+    .footer-links a {
+      font-size: 11px; color: var(--muted);
+      text-decoration: none; letter-spacing: 1px;
+      transition: color .15s;
+      font-weight: 500;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 var(--sp-6); }
+      nav ul { display: none; }
+      .page-hero, .articles-section { padding-left: var(--sp-6); padding-right: var(--sp-6); }
+      .articles-grid { grid-template-columns: 1fr; }
+      .site-footer { padding: var(--sp-6); flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- NAV -->
+<header class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="https://teddyndeda.tech">Michael Ted Ndeda</a>
+    <nav>
+      <ul>
+        <li><a href="https://teddyndeda.tech/#about">About</a></li>
+        <li><a href="https://teddyndeda.tech/#projects">Projects</a></li>
+        <li><a href="https://teddyndeda.tech/#experience">Experience</a></li>
+        <li><a href="/blog.html" class="active">Blog</a></li>
+        <li><a href="https://teddyndeda.tech/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-eyebrow">Cybersecurity Insights</div>
+  <h1 class="page-title">Articles &amp; Analysis</h1>
+  <p class="page-sub">GRC thinking, threat evolution, and strategic security commentary — written for practitioners and decision-makers.</p>
+</div>
+
+<!-- ARTICLES GRID -->
+<div class="articles-section">
+  <p class="section-label">All Articles</p>
+  <div class="articles-grid">
+
+    <!-- ARTICLE 01 — The Discovery Gap -->
+    <a href="/articles/discovery-gap.html" class="article-card">
+      <div class="card-meta">
+        <span class="tag new">New</span>
+        <span class="tag red">Breaking</span>
+        <span class="tag amber">GRC Analysis</span>
+      </div>
+      <h3 class="card-title">The Discovery Gap: Why AI Just Broke Every Security Model We Have</h3>
+      <p class="card-excerpt">Log4j taught us vulnerabilities existed long before anyone found them. Claude Mythos just showed us what happens when discovery is no longer limited by human speed.</p>
+      <div class="card-footer">
+        <span class="card-date">April 22, 2026 · 12 min</span>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <!-- PLACEHOLDER 02 -->
+    <div class="article-card placeholder">
+      <div class="card-meta"><span class="tag">Coming Soon</span></div>
+      <p class="placeholder-label">Next Article</p>
+    </div>
+
+    <!-- PLACEHOLDER 03 -->
+    <div class="article-card placeholder">
+      <div class="card-meta"><span class="tag">Coming Soon</span></div>
+      <p class="placeholder-label">Next Article</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-l">
+    <strong>Michael Ted Ndeda</strong> &nbsp;·&nbsp; Cybersecurity · GRC · Threat Intelligence
+  </div>
+  <ul class="footer-links">
+    <li><a href="https://github.com/Archer7Mi">GitHub</a></li>
+    <li><a href="https://www.linkedin.com/in/michaelndeda/">LinkedIn</a></li>
+    <li><a href="mailto:theondeda@gmail.com">Email</a></li>
+    <li><a href="https://teddyndeda.tech">Portfolio</a></li>
+  </ul>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const d = document.documentElement;
+    const pct = (d.scrollTop / (d.scrollHeight - d.clientHeight)) * 100;
+    document.getElementById('progress').style.width = pct + '%';
+  });
+</script>
+
+</body>
+</html>

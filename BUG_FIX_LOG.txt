@@ -1,0 +1,51 @@
+═══════════════════════════════════════════════════════════════════════════════
+                            BUG FIX LOG
+═══════════════════════════════════════════════════════════════════════════════
+
+DATE: April 22, 2026
+FIXED BY: GitHub Copilot
+
+═══════════════════════════════════════════════════════════════════════════════
+CRITICAL BUG - ARTICLE PAGE CSS RENDERING
+═══════════════════════════════════════════════════════════════════════════════
+
+ISSUE:
+Article page (articles/discovery-gap.html) was displaying raw CSS code as text
+on the rendered page instead of applying styling. Users saw CSS code appearing
+below the masthead/title section.
+
+ROOT CAUSE:
+The article HTML file had 42 lines of duplicate CSS code appearing AFTER the
+closing </style> tag. This code was being treated as regular HTML content and
+displayed as text instead of being ignored as part of the style block.
+
+SOLUTION:
+Removed 42 lines of duplicate CSS that appeared after </style> tag.
+
+AFFECTED FILE:
+  articles/discovery-gap.html
+
+CHANGES:
+  - Removed lines: CSS code block (duplicate of styles already in <style> tag)
+  - File size reduced: 32,999 bytes → 31,497 bytes
+  - Lines removed: 42 lines of duplicate CSS/HTML
+
+GIT COMMIT:
+  Commit: 438b5a0
+  Message: "Fix: Remove duplicate CSS preventing article page from rendering"
+  Branch: main
+  Status: Deployed to GitHub Pages
+
+VERIFICATION:
+  ✅ File fixed locally
+  ✅ Changes committed to git
+  ✅ Changes pushed to GitHub (origin/main)
+  ✅ Article page verified live at https://teddyndeda.tech/articles/discovery-gap.html
+  ✅ CSS properly encapsulated in <style> tag
+  ✅ Article content displays correctly with light theme styling
+  ✅ No CSS code visible as text on page
+  ✅ All other pages (blog.html, 404.html, insights.html) verified clean
+
+STATUS: RESOLVED AND DEPLOYED ✅
+
+═══════════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cybersecurity analysis and threat intelligence by Michael Ted Ndeda — GRC, SOC operations, and strategic security thinking." />
+  <title>Insights | Michael Ted Ndeda</title>
+
+  <!-- Same Google Fonts approach as the portfolio (system fallbacks kept lean) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Design tokens (mirror your portfolio palette) ─── */
+    :root {
+      --bg:        #0a0b0d;
+      --surface:   #111318;
+      --surface2:  #161a21;
+      --border:    #1d2130;
+      --text:      #c8ccd6;
+      --muted:     #555d72;
+      --bright:    #eceef5;
+      --accent:    #e04f4f;   /* your red */
+      --accent2:   #3d7dd9;   /* blue accent */
+      --amber:     #c8873a;
+      --green:     #3da06e;
+      --radius:    4px;
+      --sp-1:      4px;
+      --sp-2:      8px;
+      --sp-3:      12px;
+      --sp-4:      16px;
+      --sp-5:      20px;
+      --sp-6:      24px;
+      --sp-8:      32px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV — match your portfolio nav exactly ─── */
+    header.site-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,11,13,.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 var(--sp-8);
+      height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      font-weight: 700; font-size: 15px;
+      color: var(--bright);
+      text-decoration: none;
+      letter-spacing: .5px;
+    }
+    nav ul {
+      list-style: none;
+      display: flex; gap: var(--sp-8); align-items: center;
+    }
+    nav ul a {
+      font-size: 12px; letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+      font-weight: 500;
+    }
+    nav ul a:hover,
+    nav ul a.active { color: var(--bright); }
+    nav ul a.active { color: var(--accent); }
+
+    /* ─── Reading progress bar ─── */
+    #progress {
+      position: fixed; top: 60px; left: 0;
+      height: 2px; width: 0;
+      background: var(--accent);
+      z-index: 101;
+      transition: width .08s linear;
+    }
+
+    /* ─── PAGE HERO ─── */
+    .page-hero {
+      max-width: 1100px; margin: 0 auto;
+      padding: var(--sp-8) var(--sp-8) var(--sp-6);
+      border-bottom: 1px solid var(--border);
+      opacity: 0; transform: translateY(20px);
+      animation: fadeUp .6s .05s ease forwards;
+    }
+    .page-eyebrow {
+      font-size: 10px; letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--sp-4);
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 600;
+    }
+    .page-eyebrow::after {
+      content: ''; flex: 1; max-width: 60px;
+      height: 1px; background: var(--accent); opacity: .4;
+    }
+    .page-title {
+      font-weight: 700; font-size: clamp(32px, 5vw, 52px);
+      color: var(--bright);
+      line-height: 1.1; letter-spacing: -1px;
+      margin-bottom: var(--sp-4);
+    }
+    .page-sub {
+      font-size: 16px; color: var(--muted);
+      max-width: 560px; font-style: italic;
+    }
+
+    /* ─── ARTICLE INDEX ─── */
+    .index-section {
+      max-width: 1100px; margin: 0 auto;
+      padding: var(--sp-8) var(--sp-8) var(--sp-6);
+      opacity: 0; transform: translateY(16px);
+      animation: fadeUp .6s .15s ease forwards;
+    }
+    .section-label {
+      font-size: 10px; letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: var(--sp-6);
+      display: flex; align-items: center; gap: 12px;
+      font-weight: 600;
+    }
+    .section-label::after {
+      content: ''; flex: 1;
+      height: 1px; background: var(--border);
+    }
+
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: var(--sp-4);
+    }
+
+    .article-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: var(--sp-6);
+      display: flex; flex-direction: column;
+      gap: var(--sp-3);
+      text-decoration: none;
+      transition: border-color .2s, background .2s;
+      cursor: pointer;
+    }
+    .article-card:hover {
+      border-color: rgba(224,79,79,.35);
+      background: var(--surface2);
+    }
+    .article-card.featured {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-8);
+      align-items: center;
+      border-left: 2px solid var(--accent);
+    }
+    .card-meta {
+      display: flex; align-items: center;
+      gap: 10px; flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .tag.red   { color: var(--accent); border-color: rgba(224,79,79,.3); background: rgba(224,79,79,.06); }
+    .tag.blue  { color: var(--accent2); border-color: rgba(61,125,217,.3); background: rgba(61,125,217,.06); }
+    .tag.amber { color: var(--amber); border-color: rgba(200,135,58,.3); background: rgba(200,135,58,.06); }
+    .tag.new   { color: var(--green); border-color: rgba(61,160,110,.3); background: rgba(61,160,110,.06); }
+
+    .card-title {
+      font-weight: 700; font-size: 20px;
+      color: var(--bright); line-height: 1.2;
+    }
+    .article-card.featured .card-title { font-size: 26px; }
+    .card-excerpt {
+      font-size: 14px; color: var(--muted);
+      line-height: 1.65;
+    }
+    .card-footer {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-top: auto; padding-top: var(--sp-3);
+      border-top: 1px solid var(--border);
+    }
+    .card-date {
+      font-size: 10px; color: var(--muted);
+      font-weight: 500;
+    }
+    .card-arrow {
+      font-size: 12px; color: var(--accent);
+      transition: transform .2s;
+    }
+    .article-card:hover .card-arrow { transform: translateX(4px); }
+
+    /* placeholder cards */
+    .article-card.placeholder {
+      border-style: dashed;
+      opacity: .45;
+      cursor: default;
+      pointer-events: none;
+    }
+    .placeholder-label {
+      font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      padding: var(--sp-6) 0;
+      font-weight: 500;
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 var(--sp-8);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ─── FULL ARTICLE ─── */
+    .article-section {
+      max-width: 900px; margin: 0 auto;
+      padding: var(--sp-8) var(--sp-8) 80px;
+      opacity: 0; transform: translateY(16px);
+      animation: fadeUp .6s .25s ease forwards;
+    }
+
+    /* Article header */
+    .article-header { margin-bottom: 40px; }
+    .article-header .hero-meta {
+      display: flex; align-items: center; gap: 10px;
+      flex-wrap: wrap; margin-bottom: var(--sp-6);
+    }
+    .article-header h1 {
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 46px);
+      color: var(--bright); line-height: 1.1;
+      letter-spacing: -1px; margin-bottom: var(--sp-6);
+    }
+    .article-header .deck {
+      font-size: 17px; font-style: italic;
+      color: var(--muted); line-height: 1.65;
+      border-left: 2px solid var(--accent);
+      padding-left: var(--sp-4); margin-bottom: var(--sp-6);
+      max-width: 620px;
+    }
+    .byline-row {
+      display: flex; align-items: center; gap: var(--sp-4);
+      padding-top: var(--sp-6); border-top: 1px solid var(--border);
+    }
+    .byline-info { font-size: 11px; color: var(--muted); }
+    .byline-info strong { display: block; color: var(--bright); margin-bottom: 2px; font-weight: 600; }
+
+    /* Article typography */
+    .article-body h2 {
+      font-weight: 700; font-size: 26px;
+      color: var(--bright);
+      margin: 52px 0 16px;
+      letter-spacing: -.3px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .article-body h2:first-child { margin-top: 0; }
+    .article-body h3 {
+      font-size: 10px; letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin: 36px 0 12px;
+      font-weight: 600;
+    }
+    .article-body p { margin-bottom: 20px; }
+    .article-body strong { color: var(--bright); font-weight: 600; }
+    .article-body em { font-style: italic; }
+
+    /* Pull quote */
+    .pull-quote {
+      border-top: 1px solid var(--accent);
+      border-bottom: 1px solid var(--accent);
+      padding: var(--sp-6) 0;
+      margin: 40px 0;
+      font-size: 20px; font-style: italic;
+      color: var(--bright);
+      text-align: center; line-height: 1.55;
+    }
+
+    /* Breaking banner */
+    .breaking {
+      background: rgba(224,79,79,.07);
+      border: 1px solid rgba(224,79,79,.22);
+      border-left: 3px solid var(--accent);
+      padding: var(--sp-4) var(--sp-5);
+      margin: 28px 0;
+      display: flex; gap: var(--sp-4); align-items: flex-start;
+    }
+    .breaking-label {
+      font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--accent);
+      flex-shrink: 0; padding-top: 3px; font-weight: 600;
+    }
+    .breaking p { font-size: 13px; line-height: 1.65; margin: 0; }
+
+    /* Compare grid */
+    .compare {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border); margin: 24px 0;
+    }
+    .compare-col { padding: var(--sp-6); }
+    .compare-col:first-child { border-right: 1px solid var(--border); }
+    .compare-col h4 {
+      font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: var(--sp-4);
+      padding-bottom: var(--sp-3); border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+    .compare-col:first-child h4 { color: var(--muted); }
+    .compare-col:last-child h4 { color: var(--accent); }
+    .compare-col ul { list-style: none; }
+    .compare-col li {
+      font-size: 13px; padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      color: var(--text);
+      display: flex; gap: var(--sp-3); align-items: baseline;
+    }
+    .compare-col li::before { content: '—'; color: var(--muted); font-size: 10px; flex-shrink: 0; }
+
+    /* Risk table */
+    .risk-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 12px; margin: 24px 0 28px;
+      border: 1px solid var(--border);
+    }
+    .risk-table thead { background: var(--surface); }
+    .risk-table th {
+      padding: 11px 14px; text-align: left;
+      font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+    .risk-table tbody tr { border-bottom: 1px solid var(--border); }
+    .risk-table tbody tr:hover { background: rgba(255,255,255,.015); }
+    .risk-table td { padding: 11px 14px; color: var(--text); }
+    .badge {
+      display: inline-block; padding: 3px 8px;
+      font-size: 9px; letter-spacing: 1.5px;
+      text-transform: uppercase; border-radius: var(--radius);
+      font-weight: 500;
+    }
+    .b-red    { background: rgba(224,79,79,.12); color: var(--accent); border: 1px solid rgba(224,79,79,.28); }
+    .b-amber  { background: rgba(200,135,58,.12); color: var(--amber); border: 1px solid rgba(200,135,58,.28); }
+    .b-blue   { background: rgba(61,125,217,.12); color: var(--accent2); border: 1px solid rgba(61,125,217,.28); }
+
+    /* Framework grid */
+    .fw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin: 24px 0; }
+    .fw-box {
+      background: var(--surface);
+      border: 1px solid var(--border); padding: var(--sp-6);
+    }
+    .fw-box h4 {
+      font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--accent2);
+      margin-bottom: var(--sp-4); padding-bottom: var(--sp-3);
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+    .fw-box ul { list-style: none; }
+    .fw-box li {
+      font-size: 12px; padding: 4px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      color: var(--muted);
+      display: flex; gap: var(--sp-3); align-items: baseline;
+    }
+    .fw-box li::before { content: '↳'; color: var(--border); font-size: 11px; flex-shrink: 0; }
+    .fw-box li strong { color: var(--text); font-weight: 600; }
+
+    /* Gap list */
+    .gap-list { list-style: none; margin: 18px 0 26px; }
+    .gap-list li {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--accent);
+      padding: 12px 14px; margin-bottom: 8px;
+      font-size: 14px; display: flex; gap: var(--sp-4); align-items: baseline;
+    }
+    .gap-n {
+      font-size: 9px; letter-spacing: 1px;
+      color: var(--accent); flex-shrink: 0; font-weight: 600;
+    }
+
+    /* Control blocks */
+    .ctrl { border: 1px solid var(--border); margin-bottom: 10px; }
+    .ctrl-head {
+      background: var(--surface);
+      padding: 10px 14px;
+      font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--accent2);
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+    .ctrl-body { padding: var(--sp-4); }
+    .ctrl-body ul { list-style: none; }
+    .ctrl-body li {
+      font-size: 13px; padding: 4px 0;
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      color: var(--muted);
+      display: flex; gap: var(--sp-3); align-items: baseline;
+    }
+    .ctrl-body li::before { content: '◆'; font-size: 6px; color: var(--accent2); flex-shrink: 0; margin-top: 5px; }
+    .ctrl-body li strong { color: var(--text); font-weight: 600; }
+
+    /* Tier blocks */
+    .tier {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: var(--sp-6); margin-bottom: var(--sp-4); position: relative;
+    }
+    .tier-badge {
+      position: absolute; top: -1px; right: var(--sp-4);
+      font-size: 9px; letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      background: var(--bg);
+      border: 1px solid var(--border); border-top: none;
+      font-weight: 600;
+    }
+    .tier-badge.g { color: var(--green); border-color: rgba(61,160,110,.3); }
+    .tier-badge.a { color: var(--amber); border-color: rgba(200,135,58,.3); }
+    .tier-badge.r { color: var(--accent); border-color: rgba(224,79,79,.3); }
+    .tier h4 {
+      font-weight: 700; font-size: 17px;
+      color: var(--bright); margin-bottom: 10px;
+    }
+    .tier p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.7; }
+    .tier p strong { color: var(--text); font-weight: 600; }
+
+    /* Final block */
+    .final-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--accent);
+      padding: var(--sp-8); margin: 40px 0;
+    }
+    .final-block h2 { border: none; margin-top: 0; padding: 0; margin-bottom: var(--sp-6); }
+    .closing-line {
+      font-size: 18px; font-style: italic;
+      color: var(--bright); line-height: 1.6;
+      border-top: 1px solid var(--border);
+      padding-top: var(--sp-6); margin-top: var(--sp-6);
+    }
+
+    /* Share strip */
+    .share-strip {
+      display: flex; gap: 10px;
+      margin-top: 44px; padding-top: 28px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .share-btn {
+      font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 9px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color .2s, color .2s, background .2s;
+      font-weight: 500;
+    }
+    .share-btn:hover { border-color: var(--accent); color: var(--bright); background: rgba(224,79,79,.06); }
+    .share-btn.li:hover { border-color: var(--accent2); color: var(--accent2); background: rgba(61,125,217,.06); }
+
+    /* ─── FOOTER ─── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: var(--sp-6) var(--sp-8);
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: var(--sp-4);
+    }
+    .footer-l {
+      font-size: 12px; color: var(--muted);
+      font-weight: 500;
+    }
+    .footer-l strong { color: var(--bright); font-weight: 600; }
+    .footer-links {
+      display: flex; gap: var(--sp-6); list-style: none;
+    }
+    .footer-links a {
+      font-size: 11px; color: var(--muted);
+      text-decoration: none; letter-spacing: 1px;
+      transition: color .15s;
+      font-weight: 500;
+    }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ─── Animations ─── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      .nav-inner { padding: 0 var(--sp-6); }
+      nav ul { display: none; }
+      .page-hero, .index-section, .divider, .article-section { padding-left: var(--sp-6); padding-right: var(--sp-6); }
+      .article-section { padding: var(--sp-6) var(--sp-6) 60px; }
+      .fw-grid, .compare { grid-template-columns: 1fr; }
+      .compare-col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+      .articles-grid { grid-template-columns: 1fr; }
+      .article-card.featured { grid-template-columns: 1fr; gap: var(--sp-6); }
+      .site-footer { padding: var(--sp-6); flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- NAV -->
+<header class="site-nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="https://teddyndeda.tech">Michael Ted Ndeda</a>
+    <nav>
+      <ul>
+        <li><a href="https://teddyndeda.tech/#about">About</a></li>
+        <li><a href="https://teddyndeda.tech/#projects">Projects</a></li>
+        <li><a href="https://teddyndeda.tech/#experience">Experience</a></li>
+        <li><a href="/insights.html" class="active">Insights</a></li>
+        <li><a href="https://teddyndeda.tech/#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-eyebrow">Cybersecurity Insights</div>
+  <h1 class="page-title">Analysis &amp; Threat Intelligence</h1>
+  <p class="page-sub">GRC thinking, threat evolution, and strategic security commentary — written for practitioners and decision-makers.</p>
+</div>
+
+<!-- ARTICLE INDEX -->
+<div class="index-section">
+  <p class="section-label">Published Articles</p>
+  <div class="articles-grid">
+
+    <!-- FEATURED — Article 01 -->
+    <div class="article-card featured" onclick="document.getElementById('article-01').scrollIntoView({behavior:'smooth'})">
+      <div>
+        <div class="card-meta">
+          <span class="tag new">New</span>
+          <span class="tag red">Breaking</span>
+          <span class="tag amber">GRC Analysis</span>
+        </div>
+        <h2 class="card-title">The Discovery Gap: Why AI Just Broke Every Security Model We Have</h2>
+        <div class="card-footer">
+          <span class="card-date">April 22, 2026 · 12 min read</span>
+          <span class="card-arrow">↓ Read</span>
+        </div>
+      </div>
+      <p class="card-excerpt">Log4j taught us vulnerabilities existed long before anyone found them. Claude Mythos just showed us what happens when that discovery process is no longer limited by human speed — and this week, an unauthorised group proved the containment model is already failing.</p>
+    </div>
+
+    <!-- PLACEHOLDER 2 -->
+    <div class="article-card placeholder">
+      <div class="card-meta"><span class="tag">Coming Soon</span></div>
+      <p class="placeholder-label">Next Article · In Progress</p>
+    </div>
+
+    <!-- PLACEHOLDER 3 -->
+    <div class="article-card placeholder">
+      <div class="card-meta"><span class="tag">Coming Soon</span></div>
+      <p class="placeholder-label">Next Article · In Progress</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider" style="margin-top:var(--sp-8);"></div>
+
+<!-- ══════════ FULL ARTICLE ══════════ -->
+<div class="article-section" id="article-01">
+
+  <article class="article-body">
+
+    <!-- Article header -->
+    <div class="article-header">
+      <div class="hero-meta">
+        <span class="tag red">Breaking</span>
+        <span class="tag amber">GRC Analysis</span>
+        <span class="tag blue">Threat Intelligence</span>
+        <span class="tag">April 22, 2026</span>
+      </div>
+      <h1>The Discovery <em>Gap:</em><br>Why AI Just Broke Every Security Model We Have</h1>
+      <p class="deck">Log4j taught us vulnerabilities existed long before anyone found them. Claude Mythos just showed us what happens when that discovery process is no longer limited by human speed — and this week, an unauthorised group proved the containment model is already failing.</p>
+      <div class="byline-row">
+        <div class="byline-info">
+          <strong>Michael Ted Ndeda</strong>
+          Cybersecurity Analyst · SOC Operations · GRC &nbsp;·&nbsp; teddyndeda.tech
+        </div>
+      </div>
+    </div>
+
+    <!-- S1 -->
+    <h2 id="s1">The Lesson Log4j Actually Taught Us</h2>
+    <p>In December 2021, a researcher at Alibaba Cloud disclosed a vulnerability to the Apache Software Foundation. The flaw — now known as Log4Shell — existed inside a Java logging library called Log4j, embedded so deeply into global infrastructure that patching it required an emergency mobilisation of security teams worldwide. Within days of disclosure, attackers were exploiting it approximately <strong>two million times per hour</strong>. The vulnerability earned a perfect CVSS score of 10.</p>
+    <p>But here is the detail most reporting missed: <strong>Log4Shell had existed since 2013</strong>. For eight years it sat silently inside millions of systems — banks, government networks, critical infrastructure, cloud platforms. Apple iCloud. Amazon. It was not created when Chen Zhaojun found it. It was simply <em>discovered</em>.</p>
+    <p>That distinction is the foundation of everything that follows. The threat was never the discovery. The threat was the gap between existence and awareness.</p>
+
+    <div class="pull-quote">"The real risk has never been whether vulnerabilities exist.<br>It has always been <em>when</em> they are found."</div>
+
+    <!-- S2 -->
+    <h2 id="s2">The Shift: From Scarcity to Abundance</h2>
+    <p>For decades, vulnerability management operated on a stable assumption: the number of discoverable vulnerabilities at any given time was constrained by human capacity. Researchers and threat actors moved at human speed. Organisations had an imperfect but functional window to assess, prioritise, and remediate. That window is now closing.</p>
+
+    <h3>Then vs. Now</h3>
+    <div class="compare">
+      <div class="compare-col">
+        <h4>Pre-AI Era</h4>
+        <ul>
+          <li>Discovery constrained by human bandwidth</li>
+          <li>Patch cycles measured in days to weeks</li>
+          <li>Manageable vulnerability backlogs</li>
+          <li>CVSS scoring functional for prioritisation</li>
+          <li>Reactive frameworks could absorb the pace</li>
+        </ul>
+      </div>
+      <div class="compare-col">
+        <h4>AI-Accelerated Era</h4>
+        <ul>
+          <li>Discovery at machine speed — thousands per cycle</li>
+          <li>Mean time to exploit now estimated at <strong>–7 days</strong></li>
+          <li>Backlogs operationally unmanageable at volume</li>
+          <li>CVSS alone meaningless at scale</li>
+          <li>Reactive frameworks structurally inadequate</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>This month, Anthropic announced Claude Mythos Preview — a model it described as too dangerous to release publicly. In pre-release testing, Mythos autonomously identified <strong>thousands of zero-day vulnerabilities</strong> across every major operating system and browser, and could chain them into working exploits. A capability that previously required nation-state-level expertise now runs overnight on an API call.</p>
+    <p>AI doesn't create vulnerabilities. It removes the time barrier to finding them. And that changes everything about how risk must be governed.</p>
+
+    <!-- S3 -->
+    <h2 id="s3">The Containment Model Is Already Failing</h2>
+    <p>Anthropic's response was considered: a controlled release to critical infrastructure partners under Project Glasswing — Amazon, Apple, Google, Microsoft, Nvidia — with the aim of giving defenders a head start. That strategy has already encountered its first failure.</p>
+
+    <div class="breaking">
+      <span class="breaking-label">Breaking</span>
+      <p><strong>This week</strong>, Bloomberg reported that an unauthorised group has been accessing Claude Mythos Preview through a third-party vendor environment since April 7 — the same day as the public announcement. Anthropic confirmed it is investigating. The group gained access by guessing the model's API endpoint from Anthropic's naming conventions — not sophisticated hacking, but pattern recognition through a contractor relationship. The access method is now publicly documented.</p>
+    </div>
+
+    <p>The group states their intent is curiosity rather than harm. Security experts rightly point out that intent is irrelevant when the method is documented. This is not primarily a story about one group's access. It is a story about <strong>third-party vendor risk</strong> — the same vulnerability that Log4j exposed in 2021, and which remains structurally unresolved in most security programmes today.</p>
+
+    <!-- S4 -->
+    <h2 id="s4">The GRC Failure: Prioritisation at Impossible Scale</h2>
+    <p>Vulnerability management exists to answer one question: which risks matter most, right now? That question only has a tractable answer when the number of inputs is manageable. When AI-driven discovery surfaces thousands of high-severity vulnerabilities in rapid succession, the prioritisation model doesn't strain — it breaks. When everything is critical, nothing is.</p>
+
+    <h3>Current Control Failures</h3>
+    <ul class="gap-list">
+      <li><span class="gap-n">01</span>CVSS scoring was designed for bounded vulnerability counts — not machine-generated volume. It cannot handle the backlog.</li>
+      <li><span class="gap-n">02</span>Patch cycles assume time buffers that no longer exist. Mean time to exploit is now negative — exploitation before patching is the norm.</li>
+      <li><span class="gap-n">03</span>Alert fatigue in SIEM environments already degrades detection quality. At post-Mythos volumes, it collapses.</li>
+      <li><span class="gap-n">04</span>Third-party and dependency risk remains structurally unresolved. The Mythos breach came through a contractor, not Anthropic directly.</li>
+      <li><span class="gap-n">05</span>Most governance policies don't yet define AI-specific risk ownership, acceptable use, or vendor AI access controls.</li>
+    </ul>
+
+    <!-- S5 -->
+    <h2 id="s5">Framework Mapping</h2>
+    <p>These failures map directly onto control objectives organisations are already committed to under ISO 27001 and NIST CSF — which makes the gap between commitment and reality difficult to defend at board level.</p>
+
+    <div class="fw-grid">
+      <div class="fw-box">
+        <h4>ISO/IEC 27001:2022</h4>
+        <ul>
+          <li><strong>A.12.6.1</strong> — Vuln. mgmt overwhelmed by AI discovery volume</li>
+          <li><strong>A.16</strong> — Incident response capacity under acute pressure</li>
+          <li><strong>A.8</strong> — Asset mgmt incomplete; shadow dependencies untracked</li>
+          <li><strong>A.15</strong> — Supplier security not continuously monitored</li>
+        </ul>
+      </div>
+      <div class="fw-box">
+        <h4>NIST CSF 2.0</h4>
+        <ul>
+          <li><strong>Identify</strong> — Attack surface inventory misses AI-discoverable vectors</li>
+          <li><strong>Protect</strong> — Traditional controls insufficient vs. automated exploitation</li>
+          <li><strong>Detect</strong> — SIEM signal-to-noise ratio collapsing</li>
+          <li><strong>Respond</strong> — Playbooks not calibrated for AI-speed incidents</li>
+          <li><strong>Recover</strong> — Recovery now frequent, not exceptional</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- S6 -->
+    <h2 id="s6">Risk Assessment</h2>
+    <table class="risk-table">
+      <thead>
+        <tr>
+          <th>Risk Factor</th>
+          <th>Inherent Risk</th>
+          <th>Residual Risk</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>AI-accelerated exploitation at scale</td>
+          <td><span class="badge b-red">Almost Certain</span></td>
+          <td><span class="badge b-amber">Likely</span></td>
+        </tr>
+        <tr>
+          <td>Unauthorised access to Mythos-class models</td>
+          <td><span class="badge b-red">Confirmed</span></td>
+          <td><span class="badge b-amber">Under Investigation</span></td>
+        </tr>
+        <tr>
+          <td>Prioritisation model collapse under volume</td>
+          <td><span class="badge b-red">Extreme</span></td>
+          <td><span class="badge b-amber">High</span></td>
+        </tr>
+        <tr>
+          <td>Third-party vendor risk propagation</td>
+          <td><span class="badge b-red">Extreme</span></td>
+          <td><span class="badge b-blue">Partially Addressed</span></td>
+        </tr>
+        <tr>
+          <td>Governance frameworks adequacy for AI era</td>
+          <td><span class="badge b-red">Inadequate</span></td>
+          <td><span class="badge b-amber">Inadequate</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- S7 -->
+    <h2 id="s7">How Will Organisations Cope?</h2>
+    <p>The short answer: most won't — at least not initially. The industry is already behind before Mythos-level capabilities reach broad availability.</p>
+
+    <div class="tier">
+      <span class="tier-badge g">Tier 1 — Will Adapt</span>
+      <h4>Automated, machine-speed defence</h4>
+      <p>Organisations that survive will have built <strong>tightly integrated detection and response pipelines</strong> combining AI analytics, security orchestration, and pre-approved automated remediation. Early data shows these platforms achieving 90% automation of Tier-1 analyst tasks and 10× faster response times. They treat AI as an operational necessity on the defensive side, not an experiment.</p>
+    </div>
+    <div class="tier">
+      <span class="tier-badge a">Tier 2 — Scrambling</span>
+      <h4>Reactive restructuring</h4>
+      <p>SANS Institute, the Cloud Security Alliance, and OWASP released an <strong>emergency strategy briefing</strong> this month — produced over a single weekend by 60+ contributors. The fact it was an emergency briefing, not a planned publication, tells you the current state of readiness. These organisations are restructuring around contextual risk scoring and continuous exposure monitoring — reactively.</p>
+    </div>
+    <div class="tier">
+      <span class="tier-badge r">Tier 3 — The Majority</span>
+      <h4>Counting CVEs, missing the threat</h4>
+      <p>Most organisations are still running CVSS-based prioritisation and human-paced patch cycles. <strong>Critical Microsoft vulnerabilities doubled year-over-year</strong> — 78 to 157 in 12 months — driven by AI-accelerated discovery. Many security dashboards are reporting this as good news because total CVE counts dipped. They are measuring the wrong thing entirely.</p>
+    </div>
+
+    <!-- S8 -->
+    <h2 id="s8">What Actually Needs to Change</h2>
+
+    <div class="ctrl">
+      <div class="ctrl-head">Governance</div>
+      <div class="ctrl-body">
+        <ul>
+          <li>Establish an <strong>AI Risk Governance Policy</strong> — define acceptable use, monitoring, and explicit ownership of AI-driven vectors at board level</li>
+          <li>Integrate AI threat modelling into annual risk assessments as a primary item, not an addendum</li>
+          <li><strong>Mandate vendor AI access controls</strong> — the Mythos breach came through a contractor; third-party agreements must include AI model governance</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ctrl">
+      <div class="ctrl-head">Risk Management</div>
+      <div class="ctrl-body">
+        <ul>
+          <li>Transition from CVSS-only to <strong>contextual risk scoring</strong> — asset criticality, real-time exposure, and business impact</li>
+          <li>Shift from <strong>vulnerability management to exposure management</strong> — continuous, not point-in-time</li>
+          <li>Mandate <strong>SBOM</strong> for all critical systems and extend to full supply chain dependencies</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ctrl">
+      <div class="ctrl-head">Technical Controls</div>
+      <div class="ctrl-body">
+        <ul>
+          <li>Deploy <strong>SOAR</strong> — automated response pipelines are no longer optional at machine-speed attack rates</li>
+          <li>Integrate <strong>threat intelligence feeds</strong> contextualising AI-discovered vulnerabilities against active exploitation data</li>
+          <li>Automate patching for lower-criticality systems to preserve analyst capacity for high-impact decisions</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ctrl">
+      <div class="ctrl-head">Third-Party &amp; Supply Chain</div>
+      <div class="ctrl-body">
+        <ul>
+          <li>Enforce <strong>continuous vendor monitoring</strong>, not annual assessments</li>
+          <li>Require contractors to disclose AI model access in standard security questionnaires</li>
+          <li>Conduct dependency audits with explicit Log4j-class and Mythos-class breach scenarios in scope</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CONCLUSION -->
+    <div class="final-block" id="conclusion">
+      <h2>The Strategic Shift Required</h2>
+      <p>Log4j was a warning about dependency risk hiding in plain sight. The Mythos moment is a warning about something structural: our entire security architecture was designed for a world where vulnerabilities were scarce, human-discovered, and exploited at human speed.</p>
+      <p style="margin-top:14px;">That world ended this month.</p>
+      <p style="margin-top:14px;">The organisations that navigate this well won't be the fastest patchers. They'll be the ones that recognised earliest that the problem had fundamentally changed — and redesigned their measurement systems, governance frameworks, and operational models accordingly. Most will cope the way they always have: reactively, after something breaks.</p>
+      <p class="closing-line">The question is no longer: can we find vulnerabilities?<br>It is: can we make decisions fast enough in a world where discovery and exploitation are both automated?</p>
+    </div>
+
+    <!-- SHARE -->
+    <div class="share-strip">
+      <a class="share-btn li" href="https://www.linkedin.com/sharing/share-offsite/?url=https://teddyndeda.tech/insights.html" target="_blank">Share on LinkedIn</a>
+      <a class="share-btn" href="https://twitter.com/intent/tweet?text=The+Discovery+Gap+by+Michael+Ted+Ndeda&url=https://teddyndeda.tech/insights.html" target="_blank">Share on X</a>
+      <a class="share-btn" href="https://teddyndeda.tech">← Back to Portfolio</a>
+    </div>
+
+  </article>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-l">
+    <strong>Michael Ted Ndeda</strong> &nbsp;·&nbsp; Cybersecurity · GRC · Threat Intelligence
+  </div>
+  <ul class="footer-links">
+    <li><a href="https://github.com/Archer7Mi">GitHub</a></li>
+    <li><a href="https://www.linkedin.com/in/michaelndeda/">LinkedIn</a></li>
+    <li><a href="mailto:theondeda@gmail.com">Email</a></li>
+    <li><a href="https://teddyndeda.tech">Portfolio</a></li>
+  </ul>
+</footer>
+
+<script>
+  // Reading progress bar
+  window.addEventListener('scroll', () => {
+    const d = document.documentElement;
+    const pct = (d.scrollTop / (d.scrollHeight - d.clientHeight)) * 100;
+    document.getElementById('progress').style.width = pct + '%';
+  });
+</script>
+
+</body>
+</html>

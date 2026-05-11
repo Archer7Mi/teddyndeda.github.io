@@ -281,6 +281,17 @@ a { color: inherit; }
   font-weight: 400;
   margin-bottom: var(--sp-4);
 }
+.hero-badge {
+  display: inline-block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-accent);
+  background: var(--color-accent-dim);
+  border: 1px solid var(--color-accent-glow);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--sp-4);
+}
 .sep {
   margin-inline: var(--sp-2);
   opacity: 0.35;

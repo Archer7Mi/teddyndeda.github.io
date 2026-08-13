@@ -490,6 +490,19 @@ a { color: inherit; }
   color: var(--color-text-muted);
   line-height: 1.75;
 }
+.card-outcome,
+.card-limit {
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--color-text-muted);
+}
+.card-outcome {
+  color: var(--color-text);
+}
+.card-limit {
+  color: var(--color-text-faint);
+  font-style: italic;
+}
 .card-tags {
   display: flex;
   flex-wrap: wrap;

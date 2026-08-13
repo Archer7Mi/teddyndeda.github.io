@@ -1,33 +1,61 @@
-# Michael Ted Ndeda | Cybersecurity Portfolio
+# Michael Ted Ndeda
 
-This repository powers the personal cybersecurity portfolio site for Michael Ted Ndeda. It brings together the public-facing website, project highlights, blog content, and portfolio artifacts in one place.
+Lead Security Auditor • DevSecOps Advisor • SOC & Detection Engineering
 
-## What this repository contains
+I build security systems to understand how they fail — combining detection engineering, governance, and adversary simulation into resilient security programs.
 
-- A polished landing page for the cybersecurity portfolio
-- Blog and article pages for written reflections and technical notes
-- Static assets such as images, favicon, and site metadata
-- Project references and external portfolio links for practical work
-
-## Site structure
-
-- `index.html` — main portfolio homepage
-- `blog.html` — blog landing page
-- `articles/` — article pages and related content
-- `assets/` — images and site assets
-- `styles.css` — shared site styling
-
-## Featured focus areas
+## Focus areas
 
 - SOC operations and detection engineering
-- ISO/IEC 27001 and GRC documentation
-- Ethical hacking and security research
-- Incident reporting and technical writing
+- ISO/IEC 27001 governance and risk documentation
+- DevSecOps guidance and security control design
+- Adversary simulation and detection validation
+- Security operations support for public-sector and enterprise environments
 
-## Connect
+## Current positioning
+
+- ISO/IEC 27001:2022 Lead Auditor
+- Cyber Core Associate (UBI)
+- Lead Security Auditor & DevSecOps Advisor, StratNovo
+- BSc Information Security and Forensics, KCA University
+
+## Featured projects
+
+### SOC Operations Lab
+A home-based security operations environment for validating alerts, triage workflows, and attacker simulation in a controlled lab setting.
+
+- Splunk
+- TheHive
+- Cortex
+- OpenCanary
+- Sysmon
+- Ubuntu Server
+
+### ISMS Suite
+A governance-first information security management suite covering ISO 27001 controls, risk treatment, and documentation for SME and MSSP-style onboarding.
+
+- ISO 27001
+- GRC
+- Risk assessment
+- ISMS
+- Compliance documentation
+
+### Sentry
+An adversary-simulation and detection feedback workflow built to connect offensive testing with defensive tuning in a single loop.
+
+- LangGraph
+- Python
+- Red team simulation
+- Security automation
+- Detection engineering
+
+## Portfolio website
 
 - Website: https://teddyndeda.tech/
 - GitHub: https://github.com/Archer7Mi
 - LinkedIn: https://www.linkedin.com/in/michaelndeda/
+- Email: theondeda@gmail.com
 
-This repo is maintained as a simple static site and is designed to be easy to update as the portfolio grows.
+## Notes
+
+This repository supports the public-facing cybersecurity portfolio and reflects the current security professional positioning rather than unrelated side-project noise.
